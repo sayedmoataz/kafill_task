@@ -4,4 +4,5 @@ class AppStrings {
   static const String emailAddress = 'Email Address';
   static const String password = 'Password';
   static const String noRoutesFound = 'No Routes Found';
+  static const String loginString = 'login';
 }

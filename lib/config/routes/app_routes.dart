@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:kafill_tasl/features/login/presentation/cubit/login_cubit.dart';
 import 'package:kafill_tasl/features/login/presentation/pages/login_page.dart';
 
 
@@ -17,7 +18,7 @@ class AppRoutes {
   static Route? onGeneratedRoute(RouteSettings routeSettings) {
     switch (routeSettings.name) {
       case Routes.initialRoute:
-        return MaterialPageRoute(builder: ((context) => const LoginScreen()));
+        return MaterialPageRoute(builder: ((context) => BlocProvider(create: (context) => di.sl<LoginCubit>(),child: const LoginScreen())));
       // case Routes.homePage:
       //   return MaterialPageRoute(
       //       builder: ((context) => BlocProvider(
