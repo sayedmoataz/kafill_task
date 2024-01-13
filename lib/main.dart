@@ -12,8 +12,6 @@ void main() async {
   di.init();
   Bloc.observer = AppBlocObserver();
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-      statusBarColor:
-          Colors.white, // Change this color to your desired status bar color
-      statusBarIconBrightness: Brightness.dark));
+      statusBarColor: Colors.white, statusBarIconBrightness: Brightness.dark));
   runApp(const MyAppRoot());
 }

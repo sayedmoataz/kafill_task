@@ -1,4 +1,4 @@
-class EndPoints{
+class EndPoints {
   static const String baseUrl = 'https://test.kafiil.com/api/test';
   static const String login = '$baseUrl/user/login';
   static const String about = '$baseUrl/user/who-am-i';

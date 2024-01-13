@@ -8,4 +8,12 @@ class AppColors {
   static const Color primaryColor = Colors.green;
   static const Color secondaryColor = Colors.yellow;
   static Color buttonColor = HexColor('#1DBF73');
+  static Color rememberMeColor = HexColor('#696F79');
+  static Color errorColor = HexColor('#F56342');
+  static Color errorContainerColor = HexColor('#FFF0ED');
+
+  static Color stepperActiveColor = HexColor('#1DBF73');
+  static Color stepperDisActiveColor = HexColor('#E6EAEF');
+  static Color textFormFieldColor = HexColor('#F9F9F9');
+  static Color linkedInColor = HexColor('#2867B2');
 }

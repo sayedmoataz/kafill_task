@@ -1,32 +1,27 @@
 import 'package:equatable/equatable.dart';
 
-import 'error.dart';
+import 'errors.dart';
 
 class LoginErrorModel extends Equatable {
-	final int? status;
-	final bool? success;
-	final Error? error;
+  final String? message;
+  final Errors? errors;
 
-	const LoginErrorModel({this.status, this.success, this.error});
+  const LoginErrorModel({this.message, this.errors});
 
-	factory LoginErrorModel.fromJson(Map<String, dynamic> json) {
-		return LoginErrorModel(
-			status: json['status'] as int?,
-			success: json['success'] as bool?,
-			error: json['error'] == null
-						? null
-						: Error.fromJson(json['error'] as Map<String, dynamic>),
-		);
-	}
+  factory LoginErrorModel.fromJson(Map<String, dynamic> json) {
+    return LoginErrorModel(
+      message: json['message'] as String?,
+      errors: json['errors'] == null
+          ? null
+          : Errors.fromJson(json['errors'] as Map<String, dynamic>),
+    );
+  }
 
+  Map<String, dynamic> toJson() => {
+        'message': message,
+        'errors': errors?.toJson(),
+      };
 
-
-	Map<String, dynamic> toJson() => {
-				'status': status,
-				'success': success,
-				'error': error?.toJson(),
-			};
-
-	@override
-	List<Object?> get props => [status, success, error];
+  @override
+  List<Object?> get props => [message, errors];
 }

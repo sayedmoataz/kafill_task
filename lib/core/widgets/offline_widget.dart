@@ -4,7 +4,6 @@ import 'package:lottie/lottie.dart';
 
 import '../utils/app_colors.dart';
 
-
 class OfflineWidget extends StatelessWidget {
   const OfflineWidget({super.key});
 
@@ -25,7 +24,6 @@ class OfflineWidget extends StatelessWidget {
               color: AppColors.blackColor,
               fontSize: 12.sp,
             ),
-            
           ),
         ],
       ),

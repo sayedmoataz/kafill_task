@@ -8,3 +8,40 @@ abstract class RegisterState extends Equatable {
 }
 
 class RegisterInitial extends RegisterState {}
+
+class RegisterLoadingState extends RegisterState {}
+
+class NonVisbleState extends RegisterState {}
+
+class VisiblityState extends RegisterState {}
+
+class ShowErrorState extends RegisterState {}
+
+class ShowedPasswordState extends RegisterState {}
+
+class ShowedConfirmPasswordState extends RegisterState {}
+
+class RadioSelectedState extends RegisterState {}
+
+class RadioGenderState extends RegisterState {}
+
+class LoadingState extends RegisterState {}
+
+class ImageUploadState extends RegisterState {}
+
+class IncreaseSalaryState extends RegisterState {}
+
+class IncreaseSalaryErrorState extends RegisterState {}
+
+class DecreaseSalaryState extends RegisterState {}
+
+class DecreaseSalaryErrorState extends RegisterState {}
+
+class RegisterSubmitLoadingState extends RegisterState {}
+
+class FavouirteSocialMediaState extends RegisterState {}
+
+class DatePickedState extends RegisterState {}
+class GetDependenicesState extends RegisterState {}
+class HomeGetDependenciesSuccessState extends RegisterState {}
+class HomeGetDependenciesFailedState extends RegisterState {}

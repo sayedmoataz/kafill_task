@@ -6,22 +6,43 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:kafill_tasl/core/utils/app_colors.dart';
 import 'package:kafill_tasl/core/utils/app_constantances.dart';
 import 'package:kafill_tasl/core/utils/app_strings.dart';
+import 'package:kafill_tasl/core/widgets/auth/auth_title.dart';
 import 'package:kafill_tasl/features/login/presentation/cubit/login_cubit.dart';
+import 'package:kafill_tasl/features/login/presentation/widgets/error_widget.dart';
 
+import '../../../../config/routes/app_routes.dart';
 import '../../../../core/utils/assets_manager.dart';
+import '../../../../core/widgets/loadding_widget.dart';
 import '../../../../core/widgets/text_form_field.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
+
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  var emailcontroller = TextEditingController();
+  var passwordcontroller = TextEditingController();
+  @override
+  void dispose() {
+    emailcontroller.dispose();
+    passwordcontroller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<LoginCubit, LoginState>(
       listener: (context, state) {},
       builder: (context, state) {
-        var formKey = GlobalKey<FormState>();
+        var cubit = LoginCubit.get(context);
+
         return SafeArea(
           child: Scaffold(
+            resizeToAvoidBottomInset: true,
             body: Padding(
               padding: AppConstants.padding,
               child: SingleChildScrollView(
@@ -32,15 +53,15 @@ class LoginScreen extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       SizedBox(height: 40.h),
-                      Row(
-                        children: [
-                          SvgPicture.asset(ImageAssets.arrowVector),
-                          SizedBox(width: 12.w),
-                          Text(AppStrings.accountLogin,
-                              style: TextStyle(
-                                  color: Colors.grey[900], fontSize: 18.sp)),
-                        ],
-                      ),
+                      AuthAppBar(title: AppStrings.accountLogin),
+                      SizedBox(height: 15.h),
+                      cubit.isLoginValidation
+                          ? CustomErrorWidget(
+                              cubit: cubit,
+                              errorSubject: AppStrings.requiredFields)
+                          : CustomErrorWidget(
+                              cubit: cubit,
+                              errorSubject: AppStrings.forgetPasswordError),
                       SizedBox(height: 32.h),
                       Center(child: SvgPicture.asset(ImageAssets.loginIcon)),
                       SizedBox(height: 20.h),
@@ -49,59 +70,102 @@ class LoginScreen extends StatelessWidget {
                               color: Colors.grey[500], fontSize: 12.sp)),
                       SizedBox(height: 8.h),
                       MyTextFormField(
-                          context: context, obsecure: false, isNumber: false),
+                          controller: emailcontroller,
+                          context: context,
+                          obsecure: false,
+                          maxlines: 1,
+                          cubit: cubit,
+                          isNumber: false),
                       SizedBox(height: 16.sp),
                       Text(AppStrings.password,
                           style: TextStyle(
                               color: Colors.grey[500], fontSize: 12.sp)),
                       SizedBox(height: 8.h),
                       MyTextFormField(
+                          controller: passwordcontroller,
                           context: context,
-                          obsecure: true,
+                          cubit: cubit,
+                          obsecure: cubit.isShowedPassword,
                           isNumber: false,
-                          passIcon: const Icon(Icons.remove_red_eye_outlined)),
+                          maxlines: 1,
+                          passIcon: cubit.isShowedPassword
+                              ? IconButton(
+                                  icon: const Icon(Icons.visibility),
+                                  onPressed: () => cubit.showPassword(),
+                                )
+                              : IconButton(
+                                  icon: const Icon(Icons.visibility_off),
+                                  onPressed: () => cubit.showPassword(),
+                                )),
                       Row(
                         children: [
                           Checkbox(
-                            value: true,
-                            onChanged: (value) {},
+                            value: cubit.rememberChecked,
+                            onChanged: (_) => cubit.checkCheckbox(),
+                            activeColor: AppColors.primaryColor,
                           ),
-                          const Text('Remember me'),
+                          Text(AppStrings.rememberMe,
+                              style: AppConstants.rememberMeStyle),
                           const Spacer(),
                           TextButton(
-                              onPressed: () {},
-                              child: const Text('forget password?'))
+                              onPressed: () {
+                                cubit.isLoginValidation = false;
+                                cubit.isErrorVisible();
+                              },
+                              child: Text(AppStrings.forgetPassword,
+                                  style: AppConstants.rememberMeStyle))
                         ],
                       ),
                       SizedBox(height: 34.h),
-                      SizedBox(
-                        width: double.infinity,
-                        child: MaterialButton(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10.0),
+                      cubit.isLoginLoading
+                          ? const LoaddingWidget()
+                          : SizedBox(
+                              width: double.infinity,
+                              child: MaterialButton(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(12.0),
+                                  ),
+                                  color: AppColors.buttonColor,
+                                  textColor: AppColors.whiteHexColor,
+                                  onPressed: () {
+                                    if ((emailcontroller.text.isNotEmpty) &&
+                                        (passwordcontroller.text.isNotEmpty)) {
+                                      cubit
+                                          .login(
+                                              email: emailcontroller.text
+                                                  .toString(),
+                                              password: passwordcontroller.text
+                                                  .toString())
+                                          .then((value) {
+                                        emailcontroller.clear();
+                                        passwordcontroller.clear();
+                                      });
+                                    } else {
+                                      cubit.isLoginValidation = true;
+                                      cubit.isErrorVisible();
+                                    }
+                                  },
+                                  child: Text(AppStrings.loginString,
+                                      style: TextStyle(fontSize: 18.sp))),
                             ),
-                            color: AppColors.buttonColor,
-                            textColor: AppColors.whiteHexColor,
-                            onPressed: () {},
-                            child: Text(AppStrings.loginString,
-                                style: TextStyle(fontSize: 18.sp))),
-                      ),
-                      SizedBox(height: 25.h),
+                      SizedBox(height: 20.h),
                       Center(
                         child: RichText(
                           text: TextSpan(
-                            text: "Don't have an account? ",
-                            style: const TextStyle(color: Colors.green),
+                            text: AppStrings.registerQuestion,
+                            style: AppConstants.rememberMeStyle,
                             children: <TextSpan>[
                               TextSpan(
-                                text: 'Register',
+                                text: AppStrings.register,
                                 style: const TextStyle(
                                   fontWeight: FontWeight.bold,
-                                  color: Colors.blue,
-                                  decoration: TextDecoration.underline,
+                                  color: AppColors.primaryColor,
                                 ),
                                 recognizer: TapGestureRecognizer()
-                                  ..onTap = () {},
+                                  ..onTap = () {
+                                    Navigator.of(context).pushNamed(
+                                        Routes.registerPage,);
+                                  },
                               ),
                             ],
                           ),

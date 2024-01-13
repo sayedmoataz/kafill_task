@@ -8,3 +8,5 @@ abstract class ServicesState extends Equatable {
 }
 
 class ServicesInitial extends ServicesState {}
+
+class GetDependenicesState extends ServicesState {}
