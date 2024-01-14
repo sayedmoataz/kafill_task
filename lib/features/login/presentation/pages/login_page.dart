@@ -132,6 +132,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                         (passwordcontroller.text.isNotEmpty)) {
                                       cubit
                                           .login(
+                                              context: context,
                                               email: emailcontroller.text
                                                   .toString(),
                                               password: passwordcontroller.text
@@ -164,7 +165,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                 recognizer: TapGestureRecognizer()
                                   ..onTap = () {
                                     Navigator.of(context).pushNamed(
-                                        Routes.registerPage,);
+                                      Routes.registerPage,
+                                    );
                                   },
                               ),
                             ],

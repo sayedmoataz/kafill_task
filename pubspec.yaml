@@ -21,8 +21,8 @@ dependencies:
   lottie: ^2.7.0
   flutter_svg: ^2.0.9
   image_picker: ^1.0.7
-  flutter_tags_x: ^1.1.0
   intl: ^0.17.0
+
 
 
 dev_dependencies:

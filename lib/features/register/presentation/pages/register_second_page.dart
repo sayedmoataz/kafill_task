@@ -4,6 +4,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:kafill_tasl/core/utils/assets_manager.dart';
 import 'package:kafill_tasl/features/register/presentation/cubit/register_cubit.dart';
+import 'package:kafill_tasl/features/register/presentation/widgets/avatar_widget.dart';
+import 'package:kafill_tasl/features/register/presentation/widgets/skills_tags.dart';
 import 'package:kafill_tasl/features/register/presentation/widgets/text_field_container.dart';
 
 import '../../../../core/utils/app_colors.dart';
@@ -12,7 +14,6 @@ import '../../../../core/utils/app_strings.dart';
 import '../../../../core/widgets/auth/auth_title.dart';
 import '../../../../core/widgets/loadding_widget.dart';
 import '../../../login/presentation/widgets/error_widget.dart';
-import '../widgets/skills_tags.dart';
 import '../widgets/stepper_widget.dart';
 import '../widgets/widget_space.dart';
 
@@ -26,10 +27,20 @@ class SecondRegisterScreen extends StatefulWidget {
 class _RegisterScreenState extends State<SecondRegisterScreen> {
   final GlobalKey<FormState> registerFormKey = GlobalKey<FormState>();
   var aboutController = TextEditingController();
+  final ScrollController _scrollController = ScrollController();
 
   @override
   void dispose() {
+    _scrollController.dispose();
     super.dispose();
+  }
+
+  void scrollToTop() {
+    _scrollController.animateTo(
+      0.0,
+      duration: const Duration(milliseconds: 500),
+      curve: Curves.easeInOut,
+    );
   }
 
   @override
@@ -47,6 +58,7 @@ class _RegisterScreenState extends State<SecondRegisterScreen> {
                     : Padding(
                         padding: AppConstants.padding,
                         child: SingleChildScrollView(
+                            controller: _scrollController,
                             physics: const BouncingScrollPhysics(),
                             child: Form(
                                 key: registerFormKey,
@@ -70,21 +82,10 @@ class _RegisterScreenState extends State<SecondRegisterScreen> {
                                         child: Stack(
                                           children: [
                                             cubit.image != null
-                                                ? ClipRRect(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            100.0),
+                                                ? AvatarWidget(
                                                     child: Image.file(
-                                                      cubit.image!,
-                                                      width: 120.w,
-                                                      height: 120.h,
-                                                      fit: BoxFit.cover,
-                                                    ),
-                                                  )
-                                                : ClipRRect(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            100.0),
+                                                        cubit.image!))
+                                                : AvatarWidget(
                                                     child: Image.asset(
                                                         ImageAssets.avatar)),
                                             if (cubit.image == null)
@@ -157,29 +158,28 @@ class _RegisterScreenState extends State<SecondRegisterScreen> {
                                       WidgetSpaces(
                                           labelName: AppStrings.birthDate),
                                       InkWell(
-                                        onTap: () {
-                                          cubit.selectDate(context);
-                                        },
+                                        onTap: () => cubit.selectDate(context),
                                         child: Container(
-                                            width: double.infinity,
-                                            height: 56.h,
-                                            padding: EdgeInsets.symmetric(
-                                                horizontal: 16.w),
-                                            decoration: BoxDecoration(
-                                                color: AppColors
-                                                    .textFormFieldColor,
-                                                borderRadius:
-                                                    BorderRadius.circular(16)),
-                                            child: Row(
-                                              children: [
-                                                Text(
-                                                    "${cubit.selectedDate.toLocal()}"
-                                                        .split(' ')[0]),
-                                                const Spacer(),
-                                                SvgPicture.asset(
-                                                    ImageAssets.clendar)
-                                              ],
-                                            )),
+                                          width: double.infinity,
+                                          height: 56.h,
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 16.w),
+                                          decoration: BoxDecoration(
+                                              color:
+                                                  AppColors.textFormFieldColor,
+                                              borderRadius:
+                                                  BorderRadius.circular(16)),
+                                          child: Row(
+                                            children: [
+                                              Text(
+                                                  "${cubit.selectedDate.toLocal()}"
+                                                      .split(' ')[0]),
+                                              const Spacer(),
+                                              SvgPicture.asset(
+                                                  ImageAssets.clendar)
+                                            ],
+                                          ),
+                                        ),
                                       ),
                                       WidgetSpaces(
                                           labelName: AppStrings.gender),
@@ -216,9 +216,7 @@ class _RegisterScreenState extends State<SecondRegisterScreen> {
                                       ),
                                       WidgetSpaces(
                                           labelName: AppStrings.skills),
-                                      SkillsTag(
-                                          model: cubit
-                                              .dependenciesModel!.data!.tags),
+                                      const SkillTags(),
                                       WidgetSpaces(
                                           labelName:
                                               AppStrings.favouriteSocialMedia),
@@ -286,7 +284,84 @@ class _RegisterScreenState extends State<SecondRegisterScreen> {
                                                   color: AppColors.buttonColor,
                                                   textColor:
                                                       AppColors.whiteHexColor,
-                                                  onPressed: () {},
+                                                  onPressed: () {
+                                                    if ((aboutController
+                                                            .text.isNotEmpty) &&
+                                                        (aboutController
+                                                                .text.length >
+                                                            10) &&
+                                                        (aboutController
+                                                                .text.length <=
+                                                            1000)) {
+                                                      debugPrint(
+                                                          'About field valid');
+                                                      if ((cubit.selectedDate
+                                                                  .year ==
+                                                              DateTime.now()
+                                                                  .year) &&
+                                                          (cubit.selectedDate
+                                                                  .month ==
+                                                              DateTime.now()
+                                                                  .month) &&
+                                                          (cubit.selectedDate
+                                                                  .day <
+                                                              DateTime.now()
+                                                                  .day)) {
+                                                        debugPrint(
+                                                            'date of birth is valid');
+                                                        AppStrings.signUpData[
+                                                                'about'] =
+                                                            aboutController.text
+                                                                .toString();
+                                                        AppStrings.signUpData[
+                                                                'salary'] =
+                                                            cubit.salary
+                                                                .toString();
+                                                        AppStrings.signUpData[
+                                                                'birth_date'] =
+                                                            cubit.datePart
+                                                                .toString();
+                                                        AppStrings.signUpData[
+                                                                'gender'] =
+                                                            cubit.selectedGender
+                                                                .toString();
+                                                        List.generate(
+                                                            cubit
+                                                                .selectedSocialMedia
+                                                                .length,
+                                                            (index) => AppStrings
+                                                                        .signUpData[
+                                                                    'favorite_social_media[$index]'] =
+                                                                cubit
+                                                                    .selectedSocialMedia[
+                                                                        index]
+                                                                    .toString());
+                                                        List.generate(
+                                                            cubit.selectedTags
+                                                                .length,
+                                                            (index) => AppStrings
+                                                                        .signUpData[
+                                                                    'tags[$index]'] =
+                                                                cubit
+                                                                    .selectedTags[
+                                                                        index]
+                                                                    .toString());
+                                                        debugPrint(AppStrings
+                                                            .signUpData
+                                                            .toString());
+                                                        cubit.register(context);
+                                                      } else {
+                                                        scrollToTop();
+                                                        cubit.validTypeIndex =
+                                                            8;
+                                                        cubit.isErrorVisible();
+                                                      }
+                                                    } else {
+                                                      scrollToTop();
+                                                      cubit.validTypeIndex = 7;
+                                                      cubit.isErrorVisible();
+                                                    }
+                                                  },
                                                   child: Text(AppStrings.submit,
                                                       style: TextStyle(
                                                           fontSize: 18.sp))),

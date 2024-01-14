@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
+import 'package:kafill_tasl/features/about/presentation/cubit/about_cubit.dart';
 import 'package:kafill_tasl/features/login/presentation/cubit/login_cubit.dart';
 import 'package:kafill_tasl/features/register/presentation/cubit/register_cubit.dart';
 
@@ -17,6 +18,10 @@ init() async {
   sl.registerFactory(() {
     debugPrint('registerCubit.sl done');
     return RegisterCubit();
+  });
+  sl.registerFactory(() {
+    debugPrint('AboutMe Cubit.sl done');
+    return AboutCubit();
   });
 
   // // Use Cases

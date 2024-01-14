@@ -38,9 +38,13 @@ class AppStrings {
     'please type a alid email',
     'password should has 8 characters al least\npassword should not as same as email',
     'confirm password should indentical with password',
-    ' Salary must be less than 1000',
-    ' Salary must be more than 10',
+    'Salary must be less than 1000',
+    'Salary must be more than 10',
+    'About Field requires 10 characters at least\n maximum characters is : 1000',
+    'Date Of Birth should be before Today'
   ];
 
   static RegExp emailRegex = RegExp(r'^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$');
+
+  static Map<String,String>  signUpData = {};
 }

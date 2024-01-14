@@ -4,12 +4,15 @@ import 'package:flutter_offline/flutter_offline.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:kafill_tasl/config/injection_chat.dart' as di;
 import 'package:kafill_tasl/core/utils/app_colors.dart';
+import 'package:kafill_tasl/features/about/presentation/cubit/about_cubit.dart';
 import 'package:kafill_tasl/features/login/presentation/pages/login_page.dart';
 
 import 'config/routes/app_routes.dart';
 import 'config/themes/app_theme.dart';
+import 'core/services/cache_helper.dart';
 import 'core/utils/app_strings.dart';
 import 'core/widgets/offline_widget.dart';
+import 'features/about/presentation/pages/about_me.dart';
 import 'features/login/presentation/cubit/login_cubit.dart';
 
 class MyAppRoot extends StatelessWidget {
@@ -37,9 +40,13 @@ class MyAppRoot extends StatelessWidget {
               ) {
                 final bool connected = connectivity != ConnectivityResult.none;
                 if (connected) {
-                  return BlocProvider(
-                      create: (context) => di.sl<LoginCubit>(),
-                      child: const LoginScreen());
+                  return CacheHelper.getData(key: 'token') == null
+                      ? BlocProvider(
+                          create: (context) => di.sl<LoginCubit>(),
+                          child: const LoginScreen())
+                      : BlocProvider(
+                          create: (context) => di.sl<AboutCubit>(),
+                          child: const AboutMe());
                 } else {
                   return const OfflineWidget();
                 }

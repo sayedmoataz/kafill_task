@@ -42,6 +42,17 @@ class RegisterSubmitLoadingState extends RegisterState {}
 class FavouirteSocialMediaState extends RegisterState {}
 
 class DatePickedState extends RegisterState {}
+
 class GetDependenicesState extends RegisterState {}
+
 class HomeGetDependenciesSuccessState extends RegisterState {}
+
 class HomeGetDependenciesFailedState extends RegisterState {}
+
+class SelectTagsState extends RegisterState {}
+
+class SelectedTagState extends RegisterState {}
+class RemoveTagState extends RegisterState {}
+class RegisterInitialState extends RegisterState {}
+class RegisterSuccessState extends RegisterState {}
+class RegisterFailedState extends RegisterState {}

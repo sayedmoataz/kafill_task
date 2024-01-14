@@ -199,11 +199,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                                 if ((lastNameController
                                                         .text.isNotEmpty) &&
                                                     (lastNameController
-                                                            .text.length >=
-                                                        10) &&
-                                                    (lastNameController
                                                             .text.length <
-                                                        1000)) {
+                                                        50)) {
                                                   debugPrint('last name valid');
                                                   if ((registerEmailController
                                                           .text.isNotEmpty) &&
@@ -234,7 +231,36 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                                             'confirm password valid');
                                                         cubit.isFinish = true;
                                                         cubit.isActive = true;
-                                                        
+                                                        AppStrings.signUpData[
+                                                                'first_name'] =
+                                                            firstNameController
+                                                                .text
+                                                                .toString();
+                                                        AppStrings.signUpData[
+                                                                'last_name'] =
+                                                            lastNameController
+                                                                .text
+                                                                .toString();
+                                                        AppStrings.signUpData[
+                                                                'email'] =
+                                                            registerEmailController
+                                                                .text
+                                                                .toString();
+                                                        AppStrings.signUpData[
+                                                                'password'] =
+                                                            registerPasswordController
+                                                                .text
+                                                                .toString();
+                                                        AppStrings.signUpData[
+                                                                'password_confirmation'] =
+                                                            confirmRegisterPassController
+                                                                .text
+                                                                .toString();
+                                                        AppStrings.signUpData[
+                                                                'type'] =
+                                                            (cubit.selectedValue +1)
+                                                                .toString();
+                                                        debugPrint(AppStrings.signUpData.toString());
                                                         Navigator.of(context)
                                                             .pushNamed(Routes
                                                                 .secondRegisterPage);

@@ -16,4 +16,6 @@ class AppColors {
   static Color stepperDisActiveColor = HexColor('#E6EAEF');
   static Color textFormFieldColor = HexColor('#F9F9F9');
   static Color linkedInColor = HexColor('#2867B2');
+  static Color textSelectedTag = HexColor('#1DBF73');
+  static Color selectedTagColor = HexColor('#E9F9F1');
 }

@@ -11,6 +11,7 @@ class ImageAssets {
   static const String decrease = '$svgPath/Group 34402.svg';
   static const String bg = '$svgPath/bg.svg';
   static const String clendar = '$svgPath/calendar_svgrepo.com.svg';
+  static const String cancelIcon = '$svgPath/X.svg';
   static const List<String> favSocialMediaIcons = [
     '$svgPath/path14.svg',
     '$svgPath/twitter.svg',
