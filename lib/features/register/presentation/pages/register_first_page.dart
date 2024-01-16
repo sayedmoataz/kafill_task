@@ -192,9 +192,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                             color: AppColors.buttonColor,
                                             textColor: AppColors.whiteHexColor,
                                             onPressed: () {
-                                              if ((firstNameController.text.isNotEmpty) &&  (firstNameController.text.length <50)) {
+                                              if ((firstNameController.text.isNotEmpty) &&  (firstNameController.text.length <50) && (lastNameController.text.trim().isNotEmpty)) {
                                                 debugPrint('first name valid');
-                                                if ((lastNameController.text.isNotEmpty) &&(lastNameController.text.length <50)) {
+                                                if ((lastNameController.text.isNotEmpty) &&(lastNameController.text.length <50) && (lastNameController.text.trim().isNotEmpty)) {
                                                   debugPrint('last name valid');
                                                   if ((registerEmailController.text.isNotEmpty) &&(AppStrings.emailRegex.hasMatch(registerEmailController.text))) {
                                                     debugPrint('email valid');
