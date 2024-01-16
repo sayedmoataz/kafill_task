@@ -1,6 +1,5 @@
-
 class ApiHeaders {
-  static const  Map<String, String> header = {
+  static const Map<String, String> header = {
     'Accept': 'application/json',
     'Accept-Language': 'ar',
     'Content-Type': 'multipart/form-data',

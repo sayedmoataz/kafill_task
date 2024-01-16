@@ -1,13 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_offline/flutter_offline.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:kafill_tasl/config/injection_chat.dart' as di;
 import 'package:kafill_tasl/core/utils/app_colors.dart';
-import 'package:kafill_tasl/features/login/presentation/pages/login_page.dart';
+import 'package:kafill_tasl/features/BottomNavigationBar/presentation/cubit/bottomnavigationbar_cubit.dart';
+import 'package:kafill_tasl/features/BottomNavigationBar/presentation/pages/bottom_naviation.dart';
+import 'package:kafill_tasl/features/about/presentation/cubit/about_cubit.dart';
 
 import 'config/routes/app_routes.dart';
 import 'config/themes/app_theme.dart';
+import 'core/services/cache_helper.dart';
 import 'core/utils/app_strings.dart';
 import 'core/widgets/offline_widget.dart';
+import 'features/about/presentation/pages/about_me.dart';
+import 'features/login/presentation/cubit/login_cubit.dart';
+import 'features/login/presentation/pages/login_page.dart';
 
 class MyAppRoot extends StatelessWidget {
   const MyAppRoot({super.key});
@@ -34,7 +42,10 @@ class MyAppRoot extends StatelessWidget {
               ) {
                 final bool connected = connectivity != ConnectivityResult.none;
                 if (connected) {
-                  return const LoginScreen();
+                  return BlocProvider(
+                          create: (context) =>
+                              di.sl<BottomnavigationbarCubit>(),
+                          child: const BottomNavigation());
                 } else {
                   return const OfflineWidget();
                 }
