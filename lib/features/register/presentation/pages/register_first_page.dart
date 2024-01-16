@@ -65,7 +65,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                     children: [
                                       SizedBox(height: 40.h),
                                       AuthAppBar(
-                                          title: AppStrings.registerString),
+                                          title: AppStrings.registerString, onTap: () => Navigator.pop(context)),
                                       SizedBox(height: 15.h),
                                       CustomErrorWidget(
                                           cubit: cubit,
@@ -76,6 +76,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                       SizedBox(height: 30.h),
                                       HorizontalTextField(
                                         cubit: cubit,
+                                        initialValue: '',
+                                        isEnabled: true,
                                         firstNameController:
                                             firstNameController,
                                         lastNameController: lastNameController,
@@ -190,98 +192,48 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                             color: AppColors.buttonColor,
                                             textColor: AppColors.whiteHexColor,
                                             onPressed: () {
-                                              if ((firstNameController
-                                                      .text.isNotEmpty) &&
-                                                  (firstNameController
-                                                          .text.length <
-                                                      50)) {
+                                              if ((firstNameController.text.isNotEmpty) &&  (firstNameController.text.length <50)) {
                                                 debugPrint('first name valid');
-                                                if ((lastNameController
-                                                        .text.isNotEmpty) &&
-                                                    (lastNameController
-                                                            .text.length <
-                                                        50)) {
+                                                if ((lastNameController.text.isNotEmpty) &&(lastNameController.text.length <50)) {
                                                   debugPrint('last name valid');
-                                                  if ((registerEmailController
-                                                          .text.isNotEmpty) &&
-                                                      (AppStrings.emailRegex
-                                                          .hasMatch(
-                                                              registerEmailController
-                                                                  .text))) {
+                                                  if ((registerEmailController.text.isNotEmpty) &&(AppStrings.emailRegex.hasMatch(registerEmailController.text))) {
                                                     debugPrint('email valid');
-                                                    if ((registerPasswordController
-                                                            .text.isNotEmpty) &&
-                                                        (registerPasswordController
-                                                                .text !=
-                                                            registerEmailController
-                                                                .text) &&
-                                                        (registerPasswordController
-                                                                .text.length >
-                                                            8)) {
-                                                      debugPrint(
-                                                          'password valid');
-                                                      if ((confirmRegisterPassController
-                                                              .text
-                                                              .isNotEmpty) &&
-                                                          (registerPasswordController
-                                                                  .text ==
-                                                              confirmRegisterPassController
-                                                                  .text)) {
-                                                        debugPrint(
-                                                            'confirm password valid');
+                                                    if ((registerPasswordController.text.isNotEmpty) &&(registerPasswordController.text !=registerEmailController.text) &&(registerPasswordController.text.length >8)) {
+                                                      debugPrint('password valid');
+                                                      if ((confirmRegisterPassController.text.isNotEmpty) &&(registerPasswordController.text ==confirmRegisterPassController.text)) {
+                                                        debugPrint('confirm password valid');
                                                         cubit.isFinish = true;
                                                         cubit.isActive = true;
-                                                        AppStrings.signUpData[
-                                                                'first_name'] =
-                                                            firstNameController
-                                                                .text
-                                                                .toString();
-                                                        AppStrings.signUpData[
-                                                                'last_name'] =
-                                                            lastNameController
-                                                                .text
-                                                                .toString();
-                                                        AppStrings.signUpData[
-                                                                'email'] =
-                                                            registerEmailController
-                                                                .text
-                                                                .toString();
-                                                        AppStrings.signUpData[
-                                                                'password'] =
-                                                            registerPasswordController
-                                                                .text
-                                                                .toString();
-                                                        AppStrings.signUpData[
-                                                                'password_confirmation'] =
-                                                            confirmRegisterPassController
-                                                                .text
-                                                                .toString();
-                                                        AppStrings.signUpData[
-                                                                'type'] =
-                                                            (cubit.selectedValue +1)
-                                                                .toString();
+                                                        AppStrings.signUpData['first_name'] =firstNameController.text.toString();
+                                                        AppStrings.signUpData['last_name'] =lastNameController.text.toString();
+                                                        AppStrings.signUpData['email'] =registerEmailController.text.toString();
+                                                        AppStrings.signUpData['password'] =registerPasswordController.text.toString();
+                                                        AppStrings.signUpData['password_confirmation'] =confirmRegisterPassController.text.toString();
+                                                        AppStrings.signUpData['type'] =(cubit.selectedValue +1).toString();
                                                         debugPrint(AppStrings.signUpData.toString());
-                                                        Navigator.of(context)
-                                                            .pushNamed(Routes
-                                                                .secondRegisterPage);
+                                                        Navigator.of(context).pushNamed(Routes.secondRegisterPage);
                                                       } else {
-                                                        cubit.validTypeIndex =
-                                                            4;
+                                                        // confirm Password
+                                                        cubit.validTypeIndex =4;
                                                         cubit.isErrorVisible();
                                                       }
                                                     } else {
+                                                      // password
                                                       cubit.validTypeIndex = 3;
                                                       cubit.isErrorVisible();
                                                     }
                                                   } else {
+                                                    // email
                                                     cubit.validTypeIndex = 2;
                                                     cubit.isErrorVisible();
                                                   }
                                                 } else {
+                                                  // las name
                                                   cubit.validTypeIndex = 1;
                                                   cubit.isErrorVisible();
                                                 }
                                               } else {
+                                                // first name
                                                 cubit.validTypeIndex = 0;
                                                 cubit.isErrorVisible();
                                               }

@@ -22,8 +22,8 @@ dependencies:
   flutter_svg: ^2.0.9
   image_picker: ^1.0.7
   intl: ^0.17.0
-
-
+  number_pagination: ^0.0.3+2
+  fluttertoast: ^8.2.4
 
 dev_dependencies:
   flutter_test:

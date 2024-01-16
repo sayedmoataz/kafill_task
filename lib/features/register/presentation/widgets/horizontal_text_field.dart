@@ -6,13 +6,17 @@ import '../../../../core/utils/app_strings.dart';
 import '../../../../core/widgets/text_form_field.dart';
 
 class HorizontalTextField extends StatelessWidget {
-  RegisterCubit cubit;
+  var cubit;
   TextEditingController firstNameController;
   TextEditingController lastNameController;
+  String initialValue;
+  bool isEnabled;
   HorizontalTextField(
       {required this.cubit,
       required this.firstNameController,
       required this.lastNameController,
+      required this.initialValue,
+      required this.isEnabled,
       super.key});
 
   @override

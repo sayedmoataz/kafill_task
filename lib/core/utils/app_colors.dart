@@ -18,4 +18,9 @@ class AppColors {
   static Color linkedInColor = HexColor('#2867B2');
   static Color textSelectedTag = HexColor('#1DBF73');
   static Color selectedTagColor = HexColor('#E9F9F1');
+  static Color unSelectedItem = HexColor('#C3C5C8');
+  static Color tableHeaderText = HexColor('#696F79');
+  static Color tableHeaderRow = HexColor('#F9F9F9');
+  static Color disCountColor = HexColor('#FFCB31');
+  static Color completeColor = HexColor('#828282');
 }

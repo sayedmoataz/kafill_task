@@ -52,7 +52,11 @@ class HomeGetDependenciesFailedState extends RegisterState {}
 class SelectTagsState extends RegisterState {}
 
 class SelectedTagState extends RegisterState {}
+
 class RemoveTagState extends RegisterState {}
+
 class RegisterInitialState extends RegisterState {}
+
 class RegisterSuccessState extends RegisterState {}
+
 class RegisterFailedState extends RegisterState {}

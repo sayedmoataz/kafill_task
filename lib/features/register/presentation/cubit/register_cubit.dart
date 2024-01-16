@@ -1,10 +1,12 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:kafill_tasl/config/routes/app_routes.dart';
@@ -97,7 +99,7 @@ class RegisterCubit extends Cubit<RegisterState> {
     emit(LoadingState());
   }
 
-  File? image;
+  File? imageFile;
 
   Future pickImage() async {
     try {
@@ -106,7 +108,7 @@ class RegisterCubit extends Cubit<RegisterState> {
 
       final imageTemporary = File(image.path);
 
-      this.image = imageTemporary;
+      imageFile = imageTemporary;
 
       debugPrint(image.toString());
       debugPrint(image.path.toString());
@@ -119,7 +121,7 @@ class RegisterCubit extends Cubit<RegisterState> {
   void increaseSalary() {
     emit(RegisterInitial());
     if (salary < 1000) {
-      salary++;
+      salary += 10;
       emit(IncreaseSalaryState());
     } else {
       validTypeIndex = 5;
@@ -131,10 +133,11 @@ class RegisterCubit extends Cubit<RegisterState> {
   void decreaseSalary() {
     emit(RegisterInitial());
     if (salary > 100) {
-      salary--;
+      salary -= 10;
       emit(DecreaseSalaryState());
     } else {
       validTypeIndex = 6;
+
       isErrorVisible();
       emit(DecreaseSalaryErrorState());
     }
@@ -164,15 +167,17 @@ class RegisterCubit extends Cubit<RegisterState> {
   }
 
   DateTime selectedDate = DateTime.now();
+  DateTime currentDate = DateTime.now();
+ 
   String datePart = '';
 
   Future<void> selectDate(BuildContext context) async {
     emit(RegisterInitial());
+     DateTime yesterday = currentDate.subtract(Duration(days: 1));
     final DateTime? picked = await showDatePicker(
         context: context,
-        initialDate: selectedDate,
         firstDate: DateTime(1920),
-        lastDate: DateTime.now());
+        lastDate: yesterday);
     if (picked != null && picked != selectedDate) {
       selectedDate = picked;
       List<String> parts = selectedDate.toString().split(' ');
@@ -204,28 +209,39 @@ class RegisterCubit extends Cubit<RegisterState> {
   RegisterSuccessModel? registerSuccessModel;
   Future<void> register(context) async {
     emit(RegisterInitialState());
+    registerLoading();
     var uri = Uri.parse(EndPoints.register);
-
     var request = http.MultipartRequest('POST', uri);
     request.fields.addAll(AppStrings.signUpData);
-    request.files.add(await http.MultipartFile.fromPath(
-        'avatar',
-        image?.lengthSync() == 0
-            ? ImageAssets.avatar
-            : image!.path.toString()));
+    // debugPrint(image!.path);
+    request.files
+        .add(await http.MultipartFile.fromPath('avatar', imageFile!.path));
     request.headers.addAll(ApiHeaders.header);
     http.StreamedResponse response = await request.send();
-    if (response.statusCode == 200) {
-      debugPrint(await response.stream.bytesToString());
-      debugPrint('register Success');
-      Navigator.pushNamed(context, Routes.loginPage);
-      emit(RegisterSuccessState());
-    } else {
-      debugPrint(response.reasonPhrase);
-      debugPrint(response.statusCode.toString());
-      debugPrint(response.stream.toString());
-      debugPrint(await response.stream.bytesToString());
-      emit(RegisterFailedState());
+    try {
+      if (response.statusCode == 200) {
+        debugPrint(await response.stream.bytesToString());
+        debugPrint('register Success');
+        Fluttertoast.showToast(msg: "Successful Registration");
+        Navigator.pushNamed(context, Routes.initialRoute);
+        emit(RegisterSuccessState());
+      } else {
+        debugPrint(response.reasonPhrase);
+        debugPrint(response.statusCode.toString());
+        debugPrint(response.stream.toString());
+        debugPrint(await response.stream.bytesToString());
+        emit(RegisterFailedState());
+      }
+    } on PlatformException catch (e) {
+      log(e.toString());
     }
+
+    registerLoading();
+  }
+
+  Future<List<int>> loadDefaultImage() async {
+    // Load default image from assets
+    ByteData data = await rootBundle.load(ImageAssets.avatar);
+    return data.buffer.asUint8List();
   }
 }

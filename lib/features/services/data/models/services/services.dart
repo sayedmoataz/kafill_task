@@ -2,14 +2,14 @@ import 'package:equatable/equatable.dart';
 
 import 'datum.dart';
 
-class Services extends Equatable {
+class ServicesModel extends Equatable {
   final int? status;
   final bool? success;
   final List<Datum>? data;
 
-  const Services({this.status, this.success, this.data});
+  const ServicesModel({this.status, this.success, this.data});
 
-  factory Services.fromJson(Map<String, dynamic> json) => Services(
+  factory ServicesModel.fromJson(Map<String, dynamic> json) => ServicesModel(
         status: json['status'] as int?,
         success: json['success'] as bool?,
         data: (json['data'] as List<dynamic>?)

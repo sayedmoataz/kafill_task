@@ -43,6 +43,18 @@ class LoginCubit extends Cubit<LoginState> {
     emit(VisiblityState());
   }
 
+  bool errorResMsgVisibility = false;
+  void isResErrorVisible() {
+    emit(LoginInitial());
+    errorResMsgVisibility = !errorResMsgVisibility;
+    emit(ShowErrorState());
+    Future.delayed(const Duration(seconds: 5), () {
+      errorResMsgVisibility = false;
+      emit(NonVisbleState());
+    });
+    emit(VisiblityState());
+  }
+
   bool isLoginLoading = false;
   bool isLoginValidation = false;
   void loginLoading() {
@@ -65,20 +77,22 @@ class LoginCubit extends Cubit<LoginState> {
     }, headers: {
       'Accept': 'application/json',
       'Accept-Language': 'ar',
-      // 'Content-Type': 'multipart/form-data',
-      // 'Authorization': 'Bearer ${CacheHelper.getData(key: 'token')}',
-      // 'Authorization': 'Bearer ${CacheHelper.putData(key: 'token',value: token)}',
     }).then((value) {
-      loginSuccessModel = LoginSuccessModel.fromJson(jsonDecode(value.body));
-      if (rememberChecked == true) {
-        CacheHelper.putData(
-            key: 'token', value: loginSuccessModel!.accessToken.toString());
+      if (value.statusCode == 200) {
+        loginSuccessModel = LoginSuccessModel.fromJson(jsonDecode(value.body));
+        if (rememberChecked == true) {
+          CacheHelper.putData(
+              key: 'token', value: loginSuccessModel!.accessToken.toString());
+        }
+        CacheHelper.putData(key: 'password', value: password.toString());
+        debugPrint('loginSuccessModel is : ${value.body}');
+        Navigator.pushNamed(context, Routes.bottomNavigation);
+      } else {
+        loginErrorModel = LoginErrorModel.fromJson(jsonDecode(value.body));
+        isResErrorVisible();
       }
-      debugPrint('loginSuccessModel is : ${value.body}');
-      Navigator.pushNamed(context, Routes.loginPage);
       loginLoading();
     }).catchError((e) {
-      // loginErrorModel = LoginErrorModel.fromJson(jsonDecode(e));
       debugPrint('login error is : $e');
       loginLoading();
       emit(HomeLoginErrorState());

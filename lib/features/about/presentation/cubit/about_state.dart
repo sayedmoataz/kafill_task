@@ -8,3 +8,11 @@ abstract class AboutState extends Equatable {
 }
 
 class AboutInitial extends AboutState {}
+
+class ShowedPasswordState extends AboutState {}
+
+class GetAboutMEIniitialState extends AboutState {}
+
+class GetAboutMESuccessState extends AboutState {}
+
+class GetAboutMEFailedState extends AboutState {}

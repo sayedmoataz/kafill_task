@@ -16,7 +16,8 @@ class MyTextFormField extends StatelessWidget {
   Widget? icon;
   int? maxlines = 1;
   Widget? passIcon;
-  bool? enable = true;
+  bool? isEnabled = true;
+  String? initialValue = '';
   InputBorder? border = const OutlineInputBorder(
       borderRadius: BorderRadius.all(Radius.circular(15)));
   MyTextFormField({
@@ -28,8 +29,9 @@ class MyTextFormField extends StatelessWidget {
     required this.isNumber,
     required this.cubit,
     this.hint,
+    this.isEnabled,
+    this.initialValue,
     this.icon,
-    this.enable,
     this.maxlines,
     this.passIcon,
   }) : super(key: key);
@@ -42,7 +44,8 @@ class MyTextFormField extends StatelessWidget {
         onEditingComplete: () => FocusScope.of(context).nextFocus(),
         onTapOutside: (event) => FocusManager.instance.primaryFocus!.unfocus(),
         controller: controller,
-        enabled: enable,
+        enabled: isEnabled,
+        initialValue: initialValue,
         keyboardType: inputType,
         cursorColor: AppColors.primaryColor,
         obscureText: obsecure,
@@ -51,6 +54,10 @@ class MyTextFormField extends StatelessWidget {
             isNumber ? [FilteringTextInputFormatter.digitsOnly] : null,
         decoration: InputDecoration(
           hintText: hint,
+          hintStyle: TextStyle(
+              fontSize: 16.sp,
+              fontWeight: FontWeight.w500,
+              color: AppColors.blackColor),
           prefixIcon: icon,
           suffixIcon: passIcon,
           border: border,

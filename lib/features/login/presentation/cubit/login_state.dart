@@ -26,5 +26,7 @@ class LoginLoadingState extends LoginState {}
 class HomeLoginErrorState extends LoginState {}
 
 class GetDependenicesState extends LoginState {}
+
 class HomeGetDependenciesSuccessState extends LoginState {}
+
 class HomeGetDependenciesFailedState extends LoginState {}

@@ -8,3 +8,6 @@ abstract class ContriesState extends Equatable {
 }
 
 class ContriesInitial extends ContriesState {}
+class GetCountriesInitialState extends ContriesState {}
+class GetCountriesSuccessState extends ContriesState {}
+class GetCountriesFailedState extends ContriesState {}

@@ -1,14 +1,17 @@
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 
 class AvatarWidget extends StatelessWidget {
-  Widget child;
-  AvatarWidget({required this.child, super.key});
+  String imagePath;
+  bool isNetwork;
+  AvatarWidget({required this.imagePath, required this.isNetwork, super.key});
 
   @override
   Widget build(BuildContext context) {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(100.0),
-      child: child,
+    return CircleAvatar(
+      radius: 60,
+      backgroundImage: isNetwork == true
+          ? NetworkImage(imagePath) as ImageProvider<Object>?
+          : AssetImage(imagePath),
     );
   }
 }
