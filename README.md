@@ -1,16 +1,11 @@
-# kafill_tasl
 
-Kafill Final Task
-
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+ # kafill Hiring Test Task
+ 
+ 
+|Key|Details|
+|-|-|
+|UI Design|[Figma](https://www.figma.com/file/XHPvICG71xYgzIpTvoONQ2/Kafiil-Test?type=design&node-id=1%3A502&mode=dev)|
+|API Documentation|[Kafile](https://test.kafiil.com/docs/#hiring-test-POSTapi-test-user-register)|
+|Deadline|7 Days From ```Tue, JAN 09 2024``` to ```Tue, JAN 16 2024```|
+|Working Stages| The First Day was building my app structure, login, and register screens. The second Day was the rest of the app|
+|status|Watting 🕙| 
